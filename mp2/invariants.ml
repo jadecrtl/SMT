@@ -32,9 +32,9 @@ let x n = "x" ^ string_of_int n
 let rec str_of_term t =
   match t with
   | Const n -> string_of_int n
-  | Var n -> x ^ string_of_int n
+  | Var n -> "x" ^ string_of_int n
   | Add(t1, t2) -> "(+ " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
-  | Mult(t1,t2) -> "(* " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")";;
+  | Mult(t1,t2) -> "(* " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
 
 let str_of_test t = 
   match t with
@@ -50,7 +50,12 @@ let string_repeat s n =
    l'invariant.  Par exemple, str_condition [Var 1; Const 10] retourne 
    "(Inv x1 10)".
    *)
-let str_condition l = "TODO" (* À compléter *)
+let str_condition l = 
+  let rec aux l =
+    match l with
+    | [] -> ""
+    | t::q -> str_of_term t ^ " " ^ aux q
+  in "(Invar " ^ aux l ^ ")"
 
 (* Question 3. Écrire une fonction 
    `str_assert_for_all : int -> string -> string` qui prend en
