@@ -68,7 +68,13 @@ let str_condition l =
 
 let str_assert s = "(assert " ^ s ^ ")"
 
-let str_assert_forall n s = "TODO" (* À compléter *)
+let str_assert_forall n s = 
+  let rec aux n =
+    match n with
+    | 0 -> ""
+    | n -> if n - 1 = 0 then aux(n-1) ^ "(" ^ str_of_term (Var n) ^ " Int)"
+    else aux(n-1) ^ " (" ^ str_of_term (Var n) ^ " Int)"
+  in str_assert ("(forall (" ^ aux n ^ ") (" ^ s ^ "))")
 
 (* Question 4. Nous donnons ci-dessous une définition possible de la
    fonction smt_lib_of_wa. Complétez-la en écrivant les définitions de
