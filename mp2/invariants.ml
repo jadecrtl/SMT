@@ -87,7 +87,7 @@ let smtlib_of_wa p =
     ^"(declare-fun Invar (" ^ string_repeat "Int " n ^  ") Bool)" in
   let loop_condition p =
     "; la relation Invar est un invariant de boucle\n"
-    ^ str_assert (str_assert_forall p.nvars (str_condition p.inits ^ " => Invar " ^ str_of_term (List.hd p.inits))) in (*On utilise la fonction str-assert_forall pour définir l'invariant*)
+    ^ str_assert_forall p.nvars (str_condition p.inits ^ " => Invar " ^ str_of_term (List.hd p.inits)) in (*On utilise la fonction str-assert_forall pour définir l'invariant*)
   let initial_condition p =
     "; la relation Invar est vraie initialement\n"
     ^str_assert (str_condition p.inits) in
