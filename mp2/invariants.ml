@@ -84,7 +84,8 @@ let str_assert_forall n s =
 let rec create_array n =
   match n with
   | 0 -> []
-  | n -> Var n :: create_array (n-1)
+  | n -> List.rev (Var n :: create_array (n-1))
+
 let smtlib_of_wa p = 
   let declare_invariant n =
     "; synthèse d'invariant de programme\n"
