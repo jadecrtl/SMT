@@ -118,8 +118,8 @@ let () = Printf.printf "%s" (smtlib_of_wa p1)
           
 let p2 = {nvars = 2;
           inits = [(Const 0) ; (Const 0)];
-          mods = [Add ((Var 1), (Const 2)) ; Add ((Var 2), (Const 1))];
-          loopcond = LessThan ((Var 1), (Const 10));
-          assertion = LessThan ((Var 2), (Const 10))}
+          mods = [Add ((Var 1), (Const 1)) ; Add ((Var 2), (Const 3))];
+          loopcond = LessThan ((Var 1), (Const 3));
+          assertion = Equals ((Var 2), (Const 9))}
                     
 let () = Printf.printf "%s" (smtlib_of_wa p2)
