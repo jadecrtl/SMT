@@ -41,12 +41,6 @@ let str_of_test t =
   | Equals(t1,t2) -> "(= " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
   | LessThan(t1,t2) -> "(< " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
 
-(*Fonction auxiliaire permettant d'avoir la négation d'une condition :*)
-let str_opposite t =
-  match t with
-  | Equals(t1,t2) -> "(not (= " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ "))"
-  | LessThan(t1,t2) -> "(not (< " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ "))"
-
 let string_repeat s n =
   Array.fold_left (^) "" (Array.make n s)
 
@@ -86,6 +80,11 @@ let str_assert_forall n s =
    fonction smt_lib_of_wa. Complétez-la en écrivant les définitions de
    loop_condition et assertion_condition. *)
 
+(*Fonction auxiliaire permettant de créer une liste de Var : *) 
+let rec create_array n =
+  match n with
+  | 0 -> []
+  | n -> Var n :: create_array (n-1)
 let smtlib_of_wa p = 
   let declare_invariant n =
     "; synthèse d'invariant de programme\n"
@@ -93,14 +92,14 @@ let smtlib_of_wa p =
     ^"(declare-fun Invar (" ^ string_repeat "Int " n ^  ") Bool)" in
   let loop_condition p =
     "; la relation Invar est un invariant de boucle\n"
-    ^str_assert_forall (p.nvars) ("=> (and "^str_condition p.inits^" "^str_of_test(p.loopcond)^") "^str_condition(p.mods)^")")       
+    ^str_assert_forall (p.nvars) ("=> (and "^str_condition(create_array(p.nvars))^" "^str_of_test(p.loopcond)^") "^str_condition(p.mods)^")")       
   in (*On utilise la fonction str-assert_forall pour définir l'invariant*)
   let initial_condition p =
     "; la relation Invar est vraie initialement\n"
     ^str_assert (str_condition p.inits) in
   let assertion_condition p =
     "; l'assertion finale est vérifiée\n"
-    ^str_assert_forall (p.nvars) ("=> (and "^str_condition p.inits^" "^str_opposite(p.loopcond)^") "^str_of_test(p.assertion)^")") in (*On utilise la fonction str_condition pour définir l'assertion*)
+    ^str_assert_forall (p.nvars) ("=> (and "^str_condition(create_array(p.nvars))^") "^str_of_test(p.assertion)^")") in (*On utilise la fonction str_condition pour définir l'assertion*)
   let call_solver =
     "; appel au solveur\n(check-sat-using (then qe smt))\n(get-model)\n(exit)\n" in
   String.concat "\n" [declare_invariant p.nvars;
