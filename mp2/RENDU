@@ -22,7 +22,8 @@ Questions sur votre code
    warnings, puis que `./invariants` produit une sortie au format
    SMT-LIB, et enfin que cette sortie est acceptée par Z3 ?
 
-**à remplir** 
+Après exécution du makefile en faisant `make invariants` notre compilation se fait sans warning 
+et notre exécutable `.invariants` produit une sortie au format SMT-LIB qui est acceptée par Z3.
 
 ---
 
@@ -80,7 +81,13 @@ on continue pour renvoyer toutes les variables de x1 à xn.
    code pour construite un programme SMT-LIB plus proche de la façon
    dont les variables sont mises à jour en Java.
 
-**à remplir**
+Pour avoir un code qui fonctionne le plus proche de la façon dont les variables
+sont mises à jour en java il faudrait d'abord séparer les instructions de mise à
+jour de chaque variable en des instructions distinctes. Puis exécuter les instructions 
+de mise à jour dans l'ordre dans lequel elles sont écrites. 
+En suivant ces étapes nous devrions être en mesure avec un programme SMT-LIB de 
+mettre à jour les variables de manière séquentielle comme en Java.
+
 
 ---
 5. Avez-vous d'autres remarques sur votre rendu ? (question optionnelle)
