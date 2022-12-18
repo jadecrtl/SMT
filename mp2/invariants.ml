@@ -32,7 +32,7 @@ let x n = "x" ^ string_of_int n
 let rec str_of_term t =
   match t with
   | Const n -> string_of_int n
-  | Var n -> "x" ^ string_of_int n
+  | Var n -> x n
   | Add(t1, t2) -> "(+ " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
   | Mult(t1,t2) -> "(* " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
 
@@ -51,11 +51,11 @@ let string_repeat s n =
    "(Inv x1 10)".
    *)
 let str_condition l = 
-  let rec aux l =
+  let rec aux_str_cond l =
     match l with
-    | [] -> ""
-    | t::q -> str_of_term t ^ " " ^ aux q
-  in "(Invar " ^ aux l ^ ")"
+    | [] -> "" (*Cas de base*)
+    | t::q -> str_of_term t ^ " " ^ aux_str_cond q (*On concatène les variables en appelant str_of_term de chaque `term`*)
+  in "(Invar " ^ aux_str_cond l ^ ")"
 
 (* Question 3. Écrire une fonction 
    `str_assert_for_all : int -> string -> string` qui prend en
@@ -69,12 +69,12 @@ let str_condition l =
 let str_assert s = "(assert " ^ s ^ ")"
 
 let str_assert_forall n s = 
-  let rec aux n =
+  let rec aux_str_forall n =
     match n with
-    | 0 -> ""
-    | n -> if n - 1 = 0 then aux(n-1) ^ "(" ^ str_of_term (Var n) ^ " Int)"
-    else aux(n-1) ^ " (" ^ str_of_term (Var n) ^ " Int)"
-  in str_assert ("(forall (" ^ aux n ^ ") (" ^ s ^ "))")
+    | 0 -> "" (*Cas de base*)
+    | n -> if n - 1 = 0 then aux_str_forall(n-1) ^ "(" ^ x n ^ " Int)" (*On concatène les variables*)
+    else aux_str_forall(n-1) ^ " (" ^ x n ^ " Int)" (*Pour éviter les espaces en trop*)
+  in str_assert ("(forall (" ^ aux_str_forall n ^ ") (" ^ s ^ "))") (*On concatène tout et on ajoute s*)
 
 (* Question 4. Nous donnons ci-dessous une définition possible de la
    fonction smt_lib_of_wa. Complétez-la en écrivant les définitions de

@@ -9,8 +9,8 @@ Date limite: 19 décembre 2022
 Identité
 --------
 Nombre de binôme: **à remplir**
-Nom, prénom 1: **à remplir**
-Nom, prénom 2: **à remplir**
+Nom, prénom 1: CORTIAL, Jade
+Nom, prénom 2: AHMED YAHIA, Yacine
 
 
 Questions sur votre code
@@ -32,7 +32,9 @@ Questions sur votre code
    la terminaison ?
    
 
-**à remplir**
+Il est naturel d'utiliser des fonctions recursives. Les cas de base sont `Var` et `Const`,
+le nombre de `term` décroit à chaque itération recursive c'est ce qui nous assure la terminaison.
+On passe de `Add` ou `Mult` à nos cas de base.
 
 ---
 
@@ -45,7 +47,10 @@ Questions sur votre code
    comment ces fonctions auxiliaires sont utilisées dans votre
    implémentation de la fonction `str_condition`.
    
-**à remplir**
+On a écrit une fonction auxiliaire `aux_str_cond` qui s'arrête quand
+la liste en paramètre est vide et qui s'occupe de renvoyer un string avec
+tous les `term` de la liste grace à `str_of_term`. (On aurait pu utiliser un
+`List.fold` qui aurait fait str_of_term sur chaque `term` de la liste)
 
 ---
 
@@ -55,7 +60,10 @@ Questions sur votre code
    auxiliaires sont utilisées dans votre implémentation de la fonction
    `str_assert_forall`.
    
-**à remplir**   
+On a une fonction auxiliaire `aux_str_forall` qui prend un `int` en
+paramètre et qui fonctionne comme une boucle. A chaque itération
+si le n = 0 on arrête c'est le cas de base, sinon comme pour `str_condition`
+on continue pour renvoyer toutes les variables de x1 à xn.
    
 ---
 
