@@ -41,6 +41,12 @@ let str_of_test t =
   | Equals(t1,t2) -> "(= " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
   | LessThan(t1,t2) -> "(< " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"
 
+(*Fonction auxiliaire permettant d'avoir la négation d'une condition :*)
+let str_of_neg_test t =
+  match t with
+  | Equals(t1,t2) -> "(not (= " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ "))"
+  | LessThan(t1,t2) -> "(>= " ^ str_of_term t1 ^ " " ^ str_of_term t2 ^ ")"  
+
 let string_repeat s n =
   Array.fold_left (^) "" (Array.make n s)
 
@@ -100,7 +106,7 @@ let smtlib_of_wa p =
     ^str_assert (str_condition p.inits) in
   let assertion_condition p =
     "; l'assertion finale est vérifiée\n"
-    ^str_assert_forall (p.nvars) ("=> (and "^str_condition(create_array(p.nvars))^") "^str_of_test(p.assertion)^")") in (*On utilise la fonction str_condition pour définir l'assertion*)
+    ^str_assert_forall (p.nvars) ("=> (and "^str_condition(create_array(p.nvars))^" "^str_of_neg_test(p.loopcond)^") "^str_of_test(p.assertion)^")") in (*On utilise la fonction str_condition pour définir l'assertion*)
   let call_solver =
     "; appel au solveur\n(check-sat-using (then qe smt))\n(get-model)\n(exit)\n" in
   String.concat "\n" [declare_invariant p.nvars;
