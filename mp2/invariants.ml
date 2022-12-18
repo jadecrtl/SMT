@@ -87,13 +87,13 @@ let smtlib_of_wa p =
     ^"(declare-fun Invar (" ^ string_repeat "Int " n ^  ") Bool)" in
   let loop_condition p =
     "; la relation Invar est un invariant de boucle\n"
-    ^"TODO" (* À compléter *) in
+    ^ str_assert (str_assert_forall p.nvars (str_condition p.inits ^ " => Invar " ^ str_of_term (List.hd p.inits))) in (*On utilise la fonction str-assert_forall pour définir l'invariant*)
   let initial_condition p =
     "; la relation Invar est vraie initialement\n"
     ^str_assert (str_condition p.inits) in
   let assertion_condition p =
     "; l'assertion finale est vérifiée\n"
-    ^"TODO" (* À compléter *) in
+    ^ str_assert (str_condition p.inits ^ " => " ^ str_of_test p.assertion) in (*On utilise la fonction str_condition pour définir l'assertion*)
   let call_solver =
     "; appel au solveur\n(check-sat-using (then qe smt))\n(get-model)\n(exit)\n" in
   String.concat "\n" [declare_invariant p.nvars;
@@ -108,13 +108,18 @@ let p1 = {nvars = 2;
           loopcond = LessThan ((Var 1),(Const 3));
           assertion = Equals ((Var 2),(Const 9))}
 
-
 let () = Printf.printf "%s" (smtlib_of_wa p1)
-
+          
 (* Question 5. Vérifiez que votre implémentation donne un fichier
-   SMTLIB qui est équivalent au fichier que vous avez écrit à la main
-   dans l'exercice 1. Ajoutez dans la variable p2 ci-dessous au moins
-   un autre programme test, et vérifiez qu'il donne un fichier SMTLIB
-   de la forme attendue. *)
-
-let p2 = None (* À compléter *)
+  SMTLIB qui est équivalent au fichier que vous avez écrit à la main
+  dans l'exercice 1. Ajoutez dans la variable p2 ci-dessous au moins
+  un autre programme test, et vérifiez qu'il donne un fichier SMTLIB
+  de la forme attendue. *)
+          
+let p2 = {nvars = 2;
+          inits = [(Const 0) ; (Const 0)];
+          mods = [Add ((Var 1), (Const 2)) ; Add ((Var 2), (Const 1))];
+          loopcond = LessThan ((Var 1), (Const 10));
+          assertion = LessThan ((Var 2), (Const 10))}
+                    
+let () = Printf.printf "%s" (smtlib_of_wa p2)
